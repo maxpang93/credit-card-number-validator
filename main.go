@@ -14,7 +14,7 @@ func main() {
 	router.GET("/ping", liveCheck)
 	router.POST("/validate", validateHandler)
 
-	router.Run(":8081")
+	router.Run(":8080")
 	log.Print("haha")
 }
 
