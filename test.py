@@ -31,3 +31,7 @@ if __name__ == "__main__":
     validate_credit_card_number("123434565678")
     validate_credit_card_number("1234A34565678")
     validate_credit_card_number("abcdaadfawer")
+
+    # valid card numbers
+    validate_credit_card_number("17893729974")  # wikipedia example
+    validate_credit_card_number("4283321000018291")  # maybank sample
