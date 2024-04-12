@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"regexp"
+	"strconv"
 )
 
 func ValidatePaymentCardNumber(paymentCardNumber string) (bool, string) {
@@ -46,5 +47,49 @@ checkDigit = (10 - (56 mod 10)) mod 10 = 4
 */
 func validateWithLuhnAlgorithm(paymentCardNumber string) bool {
 	log.Printf("Validating '%s' with Luhn Algorithm.", paymentCardNumber)
-	return true
+
+	// convert the string to array of int
+	var digitArray []int
+	for _, char := range paymentCardNumber {
+		num, _ := strconv.Atoi(string(char))
+		digitArray = append(digitArray, num)
+	}
+
+	// extract last digit
+	lastDigit := digitArray[len(digitArray)-1]
+
+	// remove last digit from array
+	digitArray = digitArray[:len(digitArray)-1]
+
+	// reverse array
+	for i, j := 0, len(digitArray)-1; i < j; i, j = i+1, j-1 {
+		digitArray[i], digitArray[j] = digitArray[j], digitArray[i]
+	}
+
+	// double value at even position and sum the resulting digits
+	for idx, digit := range digitArray {
+		if idx%2 == 0 {
+			digitArray[idx] = sumDigit(digit * 2)
+		}
+	}
+
+	// calculate totalSum
+	var totalSum int
+	for _, value := range digitArray {
+		totalSum += value
+	}
+
+	checkDigit := (10 - (totalSum % 10)) % 10
+
+	return checkDigit == lastDigit
+}
+
+func sumDigit(digit int) int {
+	digitString := strconv.Itoa(digit)
+	var sum int
+	for _, char := range digitString {
+		integer, _ := strconv.Atoi(string(char))
+		sum += integer
+	}
+	return sum
 }
